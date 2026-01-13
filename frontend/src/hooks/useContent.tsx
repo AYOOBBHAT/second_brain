@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { setContentState } from "../config/redux/contentSlice";
+import { getApiUrl } from "../utils/api";
 axios.defaults.withCredentials = true;
 
 const useContent = (path: string) => {

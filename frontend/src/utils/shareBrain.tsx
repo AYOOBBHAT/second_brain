@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Location } from "react-router-dom";
 import { toast } from "react-toastify";
+import { getApiUrl } from "./api";
 
 interface shareBrainProps {
   share: boolean;

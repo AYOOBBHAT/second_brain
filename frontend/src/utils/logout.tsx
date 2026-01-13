@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { removeUser } from "../config/redux/userSlice";
 import { AppDispatch } from "../config/redux/store";
 import { emptyContent } from "../config/redux/contentSlice";
+import { getApiUrl } from "./api";
 
 async function logout(navigate: NavigateFunction, dispatch: AppDispatch) {
   const result = await axios.post(

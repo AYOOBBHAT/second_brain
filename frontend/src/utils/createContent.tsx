@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { addContent } from "../config/redux/contentSlice";
 import { AppDispatch } from "../config/redux/store";
 import { devLogger } from "./devLogger";
+import { getApiUrl } from "./api";
 
 async function createContent(
   inputTitle: string,
