@@ -11,7 +11,7 @@ const AppTitle = () => {
       onClick={() => navigate("/")}
     >
       <Brain />
-      <h1 className="text-text-primary font-semibold text-2xl">Brainly</h1>
+      <h1 className="text-text-primary font-semibold text-2xl">MindExtension</h1>
     </div>
   );
 };
