@@ -6,9 +6,25 @@ export const devLogger = {
     const filtered = args.map((arg) => {
       if (arg && typeof arg === "object") {
         try {
-          const copy: Record<string, unknown> = Array.isArray(arg)
-            ? arg.slice()
-            : { ...(arg as Record<string, unknown>) };
+          // Handle arrays separately so TypeScript types are correct
+          if (Array.isArray(arg)) {
+            return arg.map((item) => {
+              if (item && typeof item === "object") {
+                const itemCopy = { ...(item as Record<string, unknown>) };
+                if ("password" in itemCopy) itemCopy.password = "[REDACTED]";
+                if ("token" in itemCopy) itemCopy.token = "[REDACTED]";
+                if ("refreshToken" in itemCopy)
+                  itemCopy.refreshToken = "[REDACTED]";
+                if ("authorization" in itemCopy)
+                  itemCopy.authorization = "[REDACTED]";
+                if ("email" in itemCopy) itemCopy.email = "[REDACTED]";
+                return itemCopy;
+              }
+              return item;
+            });
+          }
+
+          const copy: Record<string, unknown> = { ...(arg as Record<string, unknown>) };
 
           // Redact common sensitive fields if present
           if ("password" in copy) copy.password = "[REDACTED]";
