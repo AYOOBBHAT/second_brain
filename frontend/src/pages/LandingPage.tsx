@@ -17,8 +17,8 @@ const LandingPage = () => {
 
       {/* Subtitle */}
       <p className="text-lg sm:text-xl text-text-secondary text-center mb-8 max-w-2xl">
-        Organize your ideas, save valuable content, and build your MindExtension.
-        With Brainly, you can collect, categorize, and easily retrieve
+        Organize your ideas, save valuable content, and build SecondBrain.
+        With MindExtension, you can collect, categorize, and easily retrieve
         information—and even share your brain with anyone around the world!
       </p>
 

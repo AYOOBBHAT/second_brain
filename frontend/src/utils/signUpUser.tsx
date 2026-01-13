@@ -3,6 +3,18 @@ import validateUserInput from "./validateUserInput";
 import { toast } from "react-toastify";
 import { devLogger } from "./devLogger";
 
+function normalizeBaseUrl(url: string) {
+  let u = (url ?? "").trim();
+  // remove trailing dots and slashes
+  u = u.replace(/\.+$/, "");
+  u = u.replace(/\/+$/, "");
+  // ensure API prefix exists
+  if (!u.includes("/api/v1")) {
+    u = u + "/api/v1";
+  }
+  return u;
+}
+
 async function signUpUser(
   usernameRef: React.RefObject<HTMLInputElement>,
   emailRef: React.RefObject<HTMLInputElement>,
@@ -22,7 +34,9 @@ async function signUpUser(
   }
 
   try {
-    const baseUrl = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:5000/api/v1";
+    const rawBase = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:5000/api/v1";
+    const baseUrl = normalizeBaseUrl(rawBase);
+    if (rawBase !== baseUrl) devLogger.debug("sanitized backend baseUrl", { rawBase, baseUrl });
     const url = `${baseUrl}/auth/signup`;
     // Only log environment/endpoint in development and never include user payload
     devLogger.debug("signUp URL:", url);
