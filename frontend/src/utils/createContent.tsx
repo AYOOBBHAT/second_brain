@@ -14,7 +14,7 @@ async function createContent(
 ) {
   try {
     const result = await axios.post(
-      `${import.meta.env.VITE_BACKEND_URL}/content`,
+      getApiUrl("/content"),
       {
         title: inputTitle,
         link: inputLink,

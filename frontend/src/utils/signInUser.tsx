@@ -5,16 +5,7 @@ import { addUser } from "../config/redux/userSlice";
 import { AppDispatch } from "../config/redux/store";
 import { NavigateFunction } from "react-router-dom";
 import { devLogger } from "./devLogger";
-
-function normalizeBaseUrl(url: string) {
-  let u = (url ?? "").trim();
-  u = u.replace(/\.+$/, "");
-  u = u.replace(/\/+$/, "");
-  if (!u.includes("/api/v1")) {
-    u = u + "/api/v1";
-  }
-  return u;
-}
+import { getApiUrl, normalizeBackendBase } from "./api"
 
 async function signInUser(
   usernameRef: React.RefObject<HTMLInputElement>,
@@ -33,9 +24,9 @@ async function signInUser(
 
   try {
     const rawBase = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:5000/api/v1";
-    const baseUrl = normalizeBaseUrl(rawBase);
-    if (rawBase !== baseUrl) devLogger.debug("sanitized backend baseUrl", { rawBase, baseUrl });
-    const url = `${baseUrl}/auth/signin`;
+    const sanitizedBase = normalizeBackendBase(rawBase);
+    if (rawBase !== sanitizedBase) devLogger.debug("sanitized backend baseUrl", { rawBase, sanitizedBase });
+    const url = getApiUrl("/auth/signin");
     devLogger.debug("signIn URL:", url);
     const result = await axios.post(
       url,

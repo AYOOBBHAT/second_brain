@@ -11,7 +11,7 @@ const useContent = (path: string) => {
   async function getContent() {
     try {
       const result = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}${path}`,
+        getApiUrl(path),
         {
           headers: {
             "Content-Type": "application/json",

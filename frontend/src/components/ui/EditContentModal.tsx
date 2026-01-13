@@ -1,5 +1,6 @@
 import { RefObject, useRef, useState } from "react";
 import Close from "../Icons/Close";
+import { getApiUrl } from "../../utils/api";
 import { InputBox } from "../../config/config";
 import { contentTypes } from "../../config/contentTypes";
 import Button from "./Button";
@@ -58,7 +59,7 @@ function editContent(
     dispatch: AppDispatch
   ) {
     const result = await axios.put(
-      `${import.meta.env.VITE_BACKEND_URL}/content/${contentId}`,
+      getApiUrl(`/content/${contentId}`),
       {
         title: inputTitle,
         link: inputLink,

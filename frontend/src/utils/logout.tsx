@@ -7,7 +7,7 @@ import { emptyContent } from "../config/redux/contentSlice";
 
 async function logout(navigate: NavigateFunction, dispatch: AppDispatch) {
   const result = await axios.post(
-    `${import.meta.env.VITE_BACKEND_URL}/auth/logout`
+    getApiUrl("/auth/logout")
   );
 
   if (result.data.success) {

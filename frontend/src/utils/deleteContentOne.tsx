@@ -10,7 +10,7 @@ async function deleteContentOne(
 ) {
   try {
     const result = await axios.delete(
-      `${import.meta.env.VITE_BACKEND_URL}/content/${_id}`,
+      getApiUrl(`/content/${_id}`),
       {
         headers: {
           "Content-Type": "application/json",
