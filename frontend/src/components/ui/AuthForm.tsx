@@ -62,7 +62,7 @@ const AuthForm = ({ isSignUpPage, switchTab }: authFormPropsType) => {
           reference={usernameRef}
         />
 
-        {inputErrorMsg.includes("username") && (
+        {(inputErrorMsg ?? "").includes("username") && (
           <span className="text-sm text-red-400">{inputErrorMsg}</span>
         )}
 
@@ -70,7 +70,7 @@ const AuthForm = ({ isSignUpPage, switchTab }: authFormPropsType) => {
           <InputBox placeholder={"Email"} reference={emailRef} />
         )}
 
-        {inputErrorMsg.includes("email") && (
+        {(inputErrorMsg ?? "").includes("email") && (
           <span className="text-sm text-red-400">{inputErrorMsg}</span>
         )}
 
@@ -82,7 +82,7 @@ const AuthForm = ({ isSignUpPage, switchTab }: authFormPropsType) => {
           switchIsHidden={switchIsHidden}
         />
 
-        {inputErrorMsg.includes("password") && (
+        {(inputErrorMsg ?? "").includes("password") && (
           <span className="text-sm text-red-400">{inputErrorMsg}</span>
         )}
 

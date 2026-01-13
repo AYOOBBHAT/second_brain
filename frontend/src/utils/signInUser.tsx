@@ -4,6 +4,7 @@ import validator from "validator";
 import { addUser } from "../config/redux/userSlice";
 import { AppDispatch } from "../config/redux/store";
 import { NavigateFunction } from "react-router-dom";
+import { devLogger } from "./devLogger";
 
 async function signInUser(
   usernameRef: React.RefObject<HTMLInputElement>,
@@ -21,26 +22,40 @@ async function signInUser(
   }
 
   try {
+    const baseUrl = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:5000/api/v1";
+    const url = `${baseUrl}/auth/signin`;
+    devLogger.debug("signIn URL:", url);
     const result = await axios.post(
-      `${import.meta.env.VITE_BACKEND_URL}/auth/signin`,
+      url,
       {
         username: usernameOrEmail,
         email: usernameOrEmail,
         password,
-      }
+      },
+      { withCredentials: true }
     );
 
     if (result.data.success) {
-      console.log(result.data.data);
+      // Avoid logging user PII to console; only emit a non-sensitive success message
+      devLogger.debug("sign in successful");
       dispatch(addUser(result.data.data));
       localStorage.setItem("isLoggedIn", result.data.data.email);
       navigate("/dashboard");
     }
-  } catch (error) {
+  } catch (error: unknown) {
     console.error(error);
-    // @ts-expect-error "need to figure out type"
-    setInputErrorMsg(error.response.data.message);
-    toast.error((error as Error).message || "Error signing in");
+    let message = "Error signing in";
+
+    if (axios.isAxiosError(error)) {
+      message = error.response?.data?.message ?? error.message ?? message;
+    } else if (error instanceof Error) {
+      message = error.message;
+    } else {
+      message = String(error);
+    }
+
+    setInputErrorMsg(String(message));
+    toast.error(String(message));
   }
 }
 

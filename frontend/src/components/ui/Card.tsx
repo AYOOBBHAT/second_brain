@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import Edit from "../Icons/Edit";
 import EditContentModal from "./EditContentModal";
+import { devLogger } from "../../utils/devLogger";
 import PopUpModal from "./PopUpModal";
 import { deleteModalText, deleteModalTitle } from "../../config/config";
 import validator from "validator";
@@ -40,7 +41,7 @@ async function shareUrl(title: string, link: string) {
 
 function createYoutubeUrl(link: string) {
   const videoIdMatch = link.match(/(?:v=|\/)([a-zA-Z0-9_-]{11})/);
-  console.log(videoIdMatch);
+  devLogger.debug(videoIdMatch);
   if (videoIdMatch) {
     return `https://www.youtube.com/embed/${videoIdMatch[1]}`;
   }

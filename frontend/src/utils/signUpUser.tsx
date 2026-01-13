@@ -1,6 +1,7 @@
 import axios from "axios";
 import validateUserInput from "./validateUserInput";
 import { toast } from "react-toastify";
+import { devLogger } from "./devLogger";
 
 async function signUpUser(
   usernameRef: React.RefObject<HTMLInputElement>,
@@ -21,23 +22,37 @@ async function signUpUser(
   }
 
   try {
+    const baseUrl = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:5000/api/v1";
+    const url = `${baseUrl}/auth/signup`;
+    // Only log environment/endpoint in development and never include user payload
+    devLogger.debug("signUp URL:", url);
     const result = await axios.post(
-      `${import.meta.env.VITE_BACKEND_URL}/auth/signup`,
+      url,
       {
         username,
         email,
         password,
-      }
+      },
+      { withCredentials: true }
     );
 
     if (result.data.success) {
       switchTab();
     }
-  } catch (error) {
+  } catch (error: unknown) {
     console.error(error);
-    // @ts-expect-error "need to figure out type"
-    setInputErrorMsg(error.response.data.message);
-    toast.error((error as Error).message || "Error signing up");
+    let message = "Error signing up";
+
+    if (axios.isAxiosError(error)) {
+      message = error.response?.data?.message ?? error.message ?? message;
+    } else if (error instanceof Error) {
+      message = error.message;
+    } else {
+      message = String(error);
+    }
+
+    setInputErrorMsg(String(message));
+    toast.error(String(message));
   }
 }
 

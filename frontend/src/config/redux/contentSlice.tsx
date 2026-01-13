@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { devLogger } from "../../utils/devLogger";
 
 export interface Content {
   _id: string;
@@ -33,7 +34,7 @@ const contentSlice = createSlice({
       state.content = [...state.content, action.payload];
     },
     removeContent: (state, action) => {
-      console.log(state.content);
+      devLogger.debug(state.content);
       state.content = state.content.filter(
         (card) => card._id != action.payload
       );

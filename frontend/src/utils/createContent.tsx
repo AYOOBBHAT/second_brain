@@ -2,6 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { addContent } from "../config/redux/contentSlice";
 import { AppDispatch } from "../config/redux/store";
+import { devLogger } from "./devLogger";
 
 async function createContent(
   inputTitle: string,
@@ -31,7 +32,7 @@ async function createContent(
       dispatch(addContent(result.data.data));
       // @ts-expect-error "need to make a globals.d.ts"
       if (window.twttr && window.twttr.widgets) {
-        console.log("re run script");
+        devLogger.debug("re run script");
         // @ts-expect-error "need to make a globals.d.ts"
         window.twttr.widgets.load();
       }
